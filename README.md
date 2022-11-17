@@ -1,4 +1,4 @@
-# racethegame
+# Race The Game
 
 Little fake 3-d race game as a project for studies.
 
