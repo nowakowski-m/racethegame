@@ -9,12 +9,15 @@ char z;
 void steering()
 {
     system("stty raw");
-        z = getchar();
+    
+    z = getchar();
+    
     system("stty cooked");
-        if(z == 126)
-        {
-            exit(0);
-        }
+    
+    if(z == 126)
+    {
+        exit(0);
+    }
 
     if (x >= 32)
     {
@@ -31,3 +34,4 @@ void steering()
         }
     }
 }
+

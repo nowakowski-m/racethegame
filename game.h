@@ -2,7 +2,23 @@
 #include <time.h>
 using namespace std;
 
-time_t sec;
+time_t sec1, sec2;
+
+void area()
+
+{
+    game_bg();
+    road_c();
+    car();
+}
+
+void area1()
+
+{
+    game_bg();
+    road_c1();
+    car();
+}
 
 void game()
 {
@@ -12,32 +28,25 @@ void game()
     r_x = 50;
     r_y = 16;
 
-    game_bg();
-    road_c();
-    car();
-    system("stty cooked");
-    steering();
-
     while (z != 126)
     {
-        sec = time(NULL);
-        game_bg();
-        road_c();
-        car();
-        while ( sec != time(NULL) )
+        sec1 = time(NULL)+5;
+        area();
+        while (time(NULL) < sec1)
         {
-            system("stty cooked");
-            steering();
+        steering();
+            while (time(NULL) >= sec1)
+            {
+                9;
+            }
         }
-
-        sec = time(NULL);
-        game_bg();
-        road_c1();
-        car();
-        while ( sec != time(NULL) )
+        
+        area1();
+        sec2 = time(NULL)+1;
+        while (time(NULL) < sec2)
         {
-            system("stty cooked");
             steering();
+            break;
         }
     }
 }
