@@ -1,27 +1,33 @@
 #include <iostream>
+#include <stdio.h>
 
 using namespace std;
 
 int x,y;
-
-string z;
+char z;
 
 void steering()
 {
-    cin >> z;
+    system("stty raw");
+        z = getchar();
+    system("stty cooked");
+        if(z == 126)
+        {
+            exit(0);
+        }
 
     if (x >= 32)
     {
-        if (z == "a" or z == "A")
+        if (z == 'a' or z == 'A')
         {
-            x -= 2;
+            x -= 4;
         }
     }
     if (x <= 68)
     {
-        if (z == "d" or z == "D")
+        if (z == 'd' or z == 'D')
         {
-            x += 2;
+            x += 4;
         }
     }
 }
