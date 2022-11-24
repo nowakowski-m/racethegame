@@ -1,52 +1,74 @@
 #include <iostream>
 #include <time.h>
+#include <conio.h>
+#include "steering.h"
+#include "background.h"
+
 using namespace std;
 
-time_t sec1, sec2;
+int road_type;
 
-void area()
-
+void pobor()
 {
-    game_bg();
-    road_c();
-    car();
+
+// mozna jeszcze pobawic sie z czasem zeby bylo szybciej, zauwazenia:
+//mnozac timenull * 2 albo dodajac dwa razy go do siebie, on i tak zwieksza sie o 2,
+//wiec dodajac do niego 1 nie zauwaza roznicy, wiec nie zmienimy jego skali
+//znajdz timenull dla milisekund w necie
+
+sec1 = ( time(NULL) );
+
+while ( sec1 >= time(NULL) )
+  {
+    while (kbhit())
+    {
+      input_take();
+      game_bg();
+      if ( road_type == 0)
+      {
+        road_c();
+      }
+      if ( road_type == 1)
+      {
+        road_c1();
+      }
+      car();
+    }
+
+  }
+
+if ( sec1 < (time(NULL)))
+{
+    if ( road_type == 0)
+      {
+        road_c1();
+        car();
+      }
+      if ( road_type == 1)
+      {
+        road_c();
+        car();
+      }
 }
-
-void area1()
-
-{
-    game_bg();
-    road_c1();
-    car();
 }
 
 void game()
 {
     x = 50;
     y = 38;
+    
+    r_x = 32;
+    r_y = 20;
 
-    r_x = 50;
-    r_y = 16;
+    game_bg();
+    road_c();
+    car();
 
-    while (z != 126)
+    while (z!=126)
     {
-        sec1 = time(NULL)+5;
-        area();
-        while (time(NULL) < sec1)
-        {
-        steering();
-            while (time(NULL) >= sec1)
-            {
-                9;
-            }
-        }
-        
-        area1();
-        sec2 = time(NULL)+1;
-        while (time(NULL) < sec2)
-        {
-            steering();
-            break;
-        }
+    road_type = 0;
+    pobor();
+    road_type = 1;
+    pobor();
     }
 }

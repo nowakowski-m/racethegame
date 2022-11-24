@@ -1,7 +1,4 @@
 #include <iostream>
-#include "background.h"
-#include "steering.h"
-#include "car.h"
 #include "menu.h"
 
 using namespace std;
