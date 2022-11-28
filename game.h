@@ -1,74 +1,86 @@
 #include <iostream>
-#include <time.h>
-#include <conio.h>
+#include "kbhit.h"
 #include "steering.h"
 #include "background.h"
+#include "road_types.h"
+#include <chrono>
+#include <time.h>
 
 using namespace std;
 
-int road_type;
+void pobor(), game();
 
-void pobor()
+int game_lenght, difficulty_level, game_lenght_for_if, difficulty_level_for_if;
+
+void score_show()
 {
-
-// mozna jeszcze pobawic sie z czasem zeby bylo szybciej, zauwazenia:
-//mnozac timenull * 2 albo dodajac dwa razy go do siebie, on i tak zwieksza sie o 2,
-//wiec dodajac do niego 1 nie zauwaza roznicy, wiec nie zmienimy jego skali
-//znajdz timenull dla milisekund w necie
-
-sec1 = ( time(NULL) );
-
-while ( sec1 >= time(NULL) )
-  {
-    while (kbhit())
-    {
-      input_take();
-      game_bg();
-      if ( road_type == 0)
-      {
-        road_c();
-      }
-      if ( road_type == 1)
-      {
-        road_c1();
-      }
-      car();
-    }
-
-  }
-
-if ( sec1 < (time(NULL)))
-{
-    if ( road_type == 0)
-      {
-        road_c1();
-        car();
-      }
-      if ( road_type == 1)
-      {
-        road_c();
-        car();
-      }
+  printf("\033[%d;%dH", 18, 37); cout << "\x1b[30;101m \x1b[0m" << "\x1b[30;41m \x1b[0m" << "\x1b[30;101m \x1b[0m" << "\x1b[30;41m \x1b[0m" << "\x1b[30;101m                    \x1b[0m" << "\x1b[30;41m \x1b[0m" << "\x1b[30;101m \x1b[0m" << "\x1b[30;41m \x1b[0m" << "\x1b[30;101m \x1b[0m";
+  printf("\033[%d;%dH", 19, 37); cout << "\x1b[30;41m \x1b[0m" << "\x1b[30;101m \x1b[0m" << "\x1b[30;41m \x1b[0m" << "\x1b[30;101m         Koniec      \x1b[0m" << "\x1b[30;101m \x1b[0m" << "\x1b[30;41m \x1b[0m" << "\x1b[30;101m \x1b[0m" << "\x1b[30;41m \x1b[0m";
+  printf("\033[%d;%dH", 20, 37); cout << "\x1b[30;101m \x1b[0m" << "\x1b[30;41m \x1b[0m" << "\x1b[30;101m \x1b[0m" << "\x1b[30;41m \x1b[0m" << "\x1b[30;101m                    \x1b[0m" << "\x1b[30;41m \x1b[0m" << "\x1b[30;101m \x1b[0m" << "\x1b[30;41m \x1b[0m" << "\x1b[30;101m \x1b[0m";
+  printf("\033[%d;%dH", 21, 37); cout << "\x1b[30;41m \x1b[0m" << "\x1b[30;101m \x1b[0m" << "\x1b[30;41m \x1b[0m" << "\x1b[30;101m       Wynik:        \x1b[0m" << "\x1b[30;101m \x1b[0m" << "\x1b[30;41m \x1b[0m" << "\x1b[30;101m \x1b[0m" << "\x1b[30;41m \x1b[0m";
+  printf("\033[%d;%dH", 21, 54); cout << "\x1b[30;101m" << score << "\x1b[0m";
+  printf("\033[%d;%dH", 22, 37); cout << "\x1b[30;101m \x1b[0m" << "\x1b[30;41m \x1b[0m" << "\x1b[30;101m \x1b[0m" << "\x1b[30;41m \x1b[0m" << "\x1b[30;101m                    \x1b[0m" << "\x1b[30;41m \x1b[0m" << "\x1b[30;101m \x1b[0m" << "\x1b[30;41m \x1b[0m" << "\x1b[30;101m \x1b[0m";
+  printf("\033[%d;%dH", 1000, 0);
 }
-}
+
 
 void game()
 {
-    x = 50;
-    y = 38;
-    
-    r_x = 32;
-    r_y = 20;
+  x = 50;
+  y = 38;
 
-    game_bg();
-    road_c();
-    car();
+  game_bg();
+  road_c();
+  car();
 
-    while (z!=126)
+  if ( game_lenght_for_if == 0 )
+    game_lenght = 60;
+  if ( game_lenght_for_if == 1 )
+    game_lenght = 120;
+  if ( game_lenght_for_if == 2 )
+    game_lenght = 180;
+  if ( difficulty_level_for_if == 0 )
+    difficulty_level = 180;
+  if ( difficulty_level_for_if == 1 )
+    difficulty_level = 125;
+  if ( difficulty_level_for_if == 2 )
+    difficulty_level = 80;
+
+  std::chrono::time_point start_moment = std::chrono::steady_clock::now();
+
+  while ( z!=126 and ( std::chrono::steady_clock::now() - start_moment <= std::chrono::seconds(game_lenght) ) )
+  {
+    pobor();
+    road_frame += 1;
+    if (road_frame == 14)
+      road_frame = 0;
+    if (road_frame == 0)
+      random_road = (time(NULL)) % 4;
+  }
+}
+
+void pobor()
+{
+  time_t random_road;
+  
+  std::chrono::time_point start = std::chrono::steady_clock::now();
+
+  while ( z != 126 )
+  {
+    while (kbhit())
     {
-    road_type = 0;
-    pobor();
-    road_type = 1;
-    pobor();
+        input_take();
+        game_bg();
+        score_print();
+        road_frame_for_kbhit();
+        car();
     }
+
+    if ( std::chrono::steady_clock::now() - start > std::chrono::milliseconds(difficulty_level) )
+    {
+        road_frame_for_time_gone();
+        score_counting();
+        break;
+    }
+  }
 }

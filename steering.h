@@ -4,7 +4,6 @@
 
 using namespace std;
 
-time_t sec1;
 char z;
 
 void input_take()
@@ -16,15 +15,14 @@ void input_take()
     {
         exit(0);
     }
-
-    if (x >= 36)
+    if (x >= 12)
     {
         if (z == 'a' or z == 'A')
         {
             x -= 4;
         }
     }
-    if (x <= 64)
+    if (x <= 88)
     {
         if (z == 'd' or z == 'D')
         {
